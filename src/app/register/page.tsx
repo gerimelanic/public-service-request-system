@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useActionState, Suspense } from 'react';
+import { useState, useActionState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { register, type AuthState } from '@/app/auth/actions';
+import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -40,7 +41,23 @@ function RegisterForm() {
   const [secondName, setSecondName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [phone, setPhone] = useState('');
-  const [isEmailConfirmed, setIsEmailConfirmed] = useState(isVerifiedFromUrl);
+
+  // Verified user details fetched when arriving from email confirmation link
+  const [verifiedName, setVerifiedName] = useState<string>('');
+  const [verifiedEmail, setVerifiedEmail] = useState<string>('');
+
+  useEffect(() => {
+    if (isVerifiedFromUrl) {
+      const supabase = createClient();
+      supabase.auth.getUser().then(({ data: { user } }) => {
+        if (user) {
+          const name = user.user_metadata?.full_name || user.email?.split('@')[0];
+          if (name) setVerifiedName(name);
+          if (user.email) setVerifiedEmail(user.email);
+        }
+      });
+    }
+  }, [isVerifiedFromUrl]);
 
   // ID Number Validation:
   // If user enters wrong characters (non-digits) or too many characters (> 8):
@@ -165,19 +182,19 @@ function RegisterForm() {
         {/* STEP 3: CONFIRM & WELCOME SCREEN */}
         {isStep3 ? (
           <div>
-            {!isEmailConfirmed ? (
-              /* A. Initial Notification: Ask citizen to confirm their email address */
+            {!isVerifiedFromUrl && !state.isImmediatelyConfirmed ? (
+              /* A. Initial Notification: Ask citizen to confirm their email address (button removed as requested) */
               <div>
                 <CardHeader className="text-center pt-8 pb-4">
-                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-amber-50 text-[#D4A017] mb-3 border border-amber-200 shadow-sm">
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-amber-50 text-[#D4A017] mb-3 border border-amber-200 shadow-sm animate-pulse">
                     <Mail className="h-8 w-8" />
                   </div>
                   <CardTitle className="text-2xl font-bold text-zinc-900">
-                    Confirm your email address
+                    Please Check Your Email
                   </CardTitle>
                   <CardDescription className="text-sm text-zinc-600 max-w-md mx-auto mt-2 leading-relaxed">
-                    We have sent a verification link to your email address{' '}
-                    <strong className="text-zinc-900">{state.registeredEmail || 'your email'}</strong>. Please click the link sent to your email to verify and activate your citizen account.
+                    We have sent a verification link to{' '}
+                    <strong className="text-zinc-900">{state.registeredEmail || 'your email address'}</strong>. Please open your email inbox and click the confirmation link to activate your citizen account.
                   </CardDescription>
                 </CardHeader>
 
@@ -188,20 +205,19 @@ function RegisterForm() {
                       <span>Security Verification Pending</span>
                     </div>
                     <p>
-                      Email confirmation ensures only authorized citizens lodge official municipal service requests. Once you open the link in your email, your account is immediately verified.
+                      Email confirmation ensures only authorized citizens lodge official municipal service requests. Once you open the link in your email, your account is immediately verified and you will be directed to submit requests on the home page.
                     </p>
                   </div>
 
-                  {/* Action to proceed after confirming email */}
-                  <div className="pt-2">
-                    <Button
-                      type="button"
-                      onClick={() => setIsEmailConfirmed(true)}
-                      className="w-full gap-2 py-5 text-sm bg-[#1E6B34] hover:bg-[#144d24] text-white font-semibold"
-                    >
-                      <CheckCircle2 className="h-4 w-4 text-[#D4A017]" />
-                      <span>I Have Confirmed My Email Link</span>
-                    </Button>
+                  {/* Notification waiting indicator */}
+                  <div className="rounded-xl border border-amber-200 bg-amber-50/70 p-3.5 text-xs text-amber-900 flex items-center gap-3">
+                    <span className="relative flex h-3 w-3 shrink-0">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+                    </span>
+                    <span className="font-medium">
+                      Waiting for email confirmation. Please check your inbox and spam folders.
+                    </span>
                   </div>
                 </CardContent>
 
@@ -211,11 +227,15 @@ function RegisterForm() {
                     <Link href="/login" className="font-semibold text-[#1E6B34] hover:underline">
                       Return to Sign In
                     </Link>
+                    {' '}&bull;{' '}
+                    <Link href="/" className="font-semibold text-[#1E6B34] hover:underline">
+                      Home Page
+                    </Link>
                   </p>
                 </CardFooter>
               </div>
             ) : (
-              /* B. Verified Welcome Note (as requested) */
+              /* B. Verified Welcome Note: Informs citizen to submit request by opening the home page */
               <div>
                 <CardHeader className="text-center pt-8 pb-4">
                   <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-[#1E6B34] mb-3 shadow-inner">
@@ -225,7 +245,7 @@ function RegisterForm() {
                     Welcome to eCitizen Public Services!
                   </CardTitle>
                   <CardDescription className="text-base text-zinc-700 max-w-md mx-auto mt-2">
-                    Hello <span className="font-semibold text-[#1E6B34]">{state.registeredName || firstName || 'Citizen'}</span>, your citizen account has been successfully registered and verified.
+                    Hello <span className="font-semibold text-[#1E6B34]">{state.registeredName || verifiedName || firstName || 'Citizen'}</span>, your citizen account has been successfully registered and verified.
                   </CardDescription>
                 </CardHeader>
 
@@ -233,15 +253,16 @@ function RegisterForm() {
                   <div className="rounded-xl border border-[#1E6B34]/30 bg-emerald-50/60 p-4 text-sm">
                     <div className="flex items-center gap-2 font-bold text-[#1E6B34]">
                       <Shield className="h-4 w-4" />
-                      <span>Citizen Profile Ready</span>
+                      <span>Citizen Profile Activated &amp; Ready</span>
                     </div>
                     <p className="mt-1 text-xs text-zinc-700 leading-relaxed">
-                      You are now empowered to lodge municipal public service tickets (streetlights, water supply, garbage, road repairs) and track the resolution process step by step.
+                      You are now authenticated and empowered to lodge municipal public service tickets (streetlights, water supply, garbage, road repairs) and track the resolution process step by step.
                     </p>
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                    <Link href="/requests/new" className="flex-1">
+                    {/* Primary Button: opens the home page to submit request without re-entering credentials */}
+                    <Link href="/" className="flex-1">
                       <Button className="w-full gap-2 shadow-sm py-5 text-sm bg-[#D4A017] hover:bg-[#B8860B] text-white font-semibold">
                         <FilePlus className="h-4 w-4" />
                         <span>Submit Service Request</span>
@@ -259,7 +280,7 @@ function RegisterForm() {
                 <CardFooter className="justify-center border-t border-zinc-100 pt-4">
                   <p className="text-xs text-zinc-500">
                     Verified citizen account for{' '}
-                    <span className="font-mono text-zinc-700">{state.registeredEmail || 'Applicant'}</span>
+                    <span className="font-mono text-zinc-700">{state.registeredEmail || verifiedEmail || 'Applicant'}</span>
                   </p>
                 </CardFooter>
               </div>

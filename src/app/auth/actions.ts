@@ -9,6 +9,7 @@ export interface AuthState {
   success?: boolean;
   registeredName?: string;
   registeredEmail?: string;
+  isImmediatelyConfirmed?: boolean;
 }
 
 // Simple email regex verifying name@domain.tld format
@@ -85,12 +86,21 @@ export async function register(
   const fullName = `${firstName} ${secondName}`;
   const supabase = await createClient();
 
-  // 3. Sign up with Supabase Auth
-  // We pass metadata so trigger handle_new_user() populates the public.profiles row.
+  // 3. Determine site origin for email callbacks
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : 'https://public-service-request-system-two.vercel.app');
+
+  // Sign up with Supabase Auth
+  // We pass metadata so trigger handle_new_user() populates the public.profiles row,
+  // and emailRedirectTo so the confirmation link directs the user back to the application.
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
+      emailRedirectTo: `${siteUrl}/auth/callback?next=/register?verified=true`,
       data: {
         full_name: fullName,
         id_number: idNumber,
@@ -101,21 +111,37 @@ export async function register(
   });
 
   if (error) {
+    console.error('Supabase registration error:', error);
+    if (error.message.toLowerCase().includes('already registered')) {
+      return {
+        error: 'An account with this email already exists. Please sign in instead.',
+      };
+    }
+    if (
+      error.message.toLowerCase().includes('rate limit') ||
+      (error as { code?: string }).code === 'over_email_send_rate_limit'
+    ) {
+      return {
+        error:
+          'Supabase email limit reached (default free tier is capped at 3-4 emails/hour). Please wait a few minutes, or disable "Confirm email" in your Supabase Dashboard under Authentication -> Providers -> Email to register immediately without limits.',
+      };
+    }
     return {
-      error: error.message.includes('already registered')
-        ? 'An account with this email already exists.'
-        : 'Failed to create account. Please try again.',
+      error: error.message || 'Failed to create account. Please try again.',
     };
   }
+
+  const isConfirmed = Boolean(data.session || data.user?.confirmed_at || data.user?.email_confirmed_at);
 
   // Return success payload to allow the UI to transition to Step 3 (Confirm Email / Welcome)
   return {
     success: true,
-    message: data.session
-      ? 'Account created successfully!'
+    message: isConfirmed
+      ? 'Account created and verified successfully!'
       : 'Registration successful! Check your email to confirm your account.',
     registeredName: firstName,
     registeredEmail: email,
+    isImmediatelyConfirmed: isConfirmed,
   };
 }
 
@@ -181,9 +207,15 @@ export async function forgotPassword(
 
   const supabase = await createClient();
 
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : 'https://public-service-request-system-two.vercel.app');
+
   // Send password reset email with callback route
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/auth/callback?next=/reset-password`,
+    redirectTo: `${siteUrl}/auth/callback?next=/reset-password`,
   });
 
   if (error) {

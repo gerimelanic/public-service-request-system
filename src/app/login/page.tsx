@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useActionState, useEffect, Suspense } from 'react';
+import { useState, useActionState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -21,13 +21,9 @@ function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showAdminHelper, setShowAdminHelper] = useState(false);
-  const [isForgotPassword, setIsForgotPassword] = useState(false);
-
-  useEffect(() => {
-    if (searchParams.get('forgot') === 'true') {
-      setIsForgotPassword(true);
-    }
-  }, [searchParams]);
+  const isForgotFromQuery = searchParams.get('forgot') === 'true';
+  const [isForgotPasswordOverride, setIsForgotPasswordOverride] = useState<boolean | null>(null);
+  const isForgotPassword = isForgotPasswordOverride ?? isForgotFromQuery;
 
   // Autofill administrative demo credentials
   const fillAdminCredentials = () => {
@@ -121,7 +117,7 @@ function LoginForm() {
 
               <button
                 type="button"
-                onClick={() => setIsForgotPassword(false)}
+                onClick={() => setIsForgotPasswordOverride(false)}
                 className="inline-flex items-center justify-center gap-1.5 text-xs text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white pt-1"
               >
                 <ArrowLeft className="h-3.5 w-3.5" />
@@ -167,7 +163,7 @@ function LoginForm() {
                   </Label>
                   <button
                     type="button"
-                    onClick={() => setIsForgotPassword(true)}
+                    onClick={() => setIsForgotPasswordOverride(true)}
                     className="text-xs font-semibold text-[#1E6B34] hover:text-[#144d24] dark:text-emerald-400 dark:hover:text-emerald-300 hover:underline"
                   >
                     Forgot Password?

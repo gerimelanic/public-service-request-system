@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { createClient } from '@/lib/supabase/server';
 import { logout } from '@/app/auth/actions';
 import { Button } from '@/components/ui/button';
-import { Home, Shield, FileText, LogOut, LogIn, UserPlus } from 'lucide-react';
+import { Home, FileText, LogOut, LogIn, UserPlus } from 'lucide-react';
 
 export async function Navbar() {
   const supabase = await createClient();

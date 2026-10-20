@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,28 +11,30 @@ import { Label } from '@/components/ui/label';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Lock, CheckCircle2, AlertCircle, Loader2, ArrowRight } from 'lucide-react';
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
+  const searchParams = useSearchParams();
+  const queryError = searchParams?.get('error');
+
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(
+    queryError
+      ? 'This password reset link is invalid, expired, or was requested from another browser. Please request a fresh reset link below.'
+      : null
+  );
   const [success, setSuccess] = useState(false);
   const [isPending, setIsPending] = useState(false);
-  const [isVerifying, setIsVerifying] = useState(true);
+  const [isVerifying, setIsVerifying] = useState(!queryError);
   const [hasSession, setHasSession] = useState(false);
 
   useEffect(() => {
+    if (queryError) {
+      return;
+    }
+
     const supabase = createClient();
     const url = new URL(window.location.href);
     const code = url.searchParams.get('code');
-    const queryError = url.searchParams.get('error');
-
-    if (queryError) {
-      setError(
-        'This password reset link is invalid, expired, or was requested from another browser. Please request a fresh reset link below.'
-      );
-      setIsVerifying(false);
-      return;
-    }
 
     // 1. If there's a code in query params, attempt exchange (handles direct links)
     if (code) {
@@ -70,7 +73,7 @@ export default function ResetPasswordPage() {
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [queryError, searchParams]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -254,5 +257,19 @@ export default function ResetPasswordPage() {
         )}
       </Card>
     </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center p-4">
+          <Loader2 className="h-8 w-8 animate-spin text-[#1E6B34]" />
+        </div>
+      }
+    >
+      <ResetPasswordForm />
+    </Suspense>
   );
 }
