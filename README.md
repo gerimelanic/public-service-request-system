@@ -65,11 +65,7 @@ Execute the complete database initialization script in your **Supabase Project &
 - Run the schema from [`supabase/schema.sql`](./supabase/schema.sql).
 - This sets up tables (`profiles`, `service_requests`), indexes, RLS security policies, and the `request-images` storage bucket.
 
-### 5. Custom Email Templates (Optional)
-To brand your confirmation and password reset emails to match the county theme:
-- Follow the instructions in [`supabase/templates/README.md`](./supabase/templates/README.md).
-
-### 6. Run the Development Server
+### 5. Run the Development Server
 ```bash
 npm run dev
 ```
