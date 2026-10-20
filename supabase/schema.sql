@@ -38,6 +38,10 @@ alter table public.service_requests drop constraint if exists service_requests_c
 alter table public.service_requests add constraint service_requests_category_check 
   check (category in ('streetlight', 'water', 'garbage', 'roads', 'health', 'education', 'other'));
 
+-- Idempotent column additions for constituency and ward administrative divisions
+alter table public.service_requests add column if not exists constituency text;
+alter table public.service_requests add column if not exists ward text;
+
 -- 3. INDEXES FOR PERFORMANCE
 create index if not exists idx_service_requests_citizen_id on public.service_requests(citizen_id);
 create index if not exists idx_service_requests_status on public.service_requests(status);

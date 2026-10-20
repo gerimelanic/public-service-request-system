@@ -8,12 +8,15 @@ import {
   RequestCategory,
   MAX_IMAGE_BYTES,
   ALLOWED_IMAGE_TYPES,
+  MURANGA_CONSTITUENCIES,
 } from '@/lib/constants';
 
 export interface SubmitRequestState {
   error?: string | null;
   fieldErrors?: {
     category?: string;
+    constituency?: string;
+    ward?: string;
     location?: string;
     description?: string;
     image?: string;
@@ -38,7 +41,9 @@ export async function submitRequest(
   // 2. Extract and sanitize inputs
   const category = String(formData.get('category') || '').trim() as RequestCategory;
   const customCategory = String(formData.get('custom_category') || '').trim();
-  const location = String(formData.get('location') || '').trim();
+  const constituency = String(formData.get('constituency') || '').trim();
+  const ward = String(formData.get('ward') || '').trim();
+  const specificLocation = String(formData.get('specific_location') || formData.get('location') || '').trim();
   let description = String(formData.get('description') || '').trim();
 
   // If citizen selected 'other', combine custom category into description header
@@ -57,12 +62,33 @@ export async function submitRequest(
     fieldErrors.category = 'Please specify the service not captured in the category list.';
   }
 
-  // Validate Location
-  if (!location || location.length < 3) {
-    fieldErrors.location = 'Please provide a specific location (at least 3 characters).';
-  } else if (location.length > 200) {
+  // Validate Constituency
+  const selectedConstituencyObj = MURANGA_CONSTITUENCIES.find(
+    (c) => c.name.toLowerCase() === constituency.toLowerCase() || c.label.toLowerCase() === constituency.toLowerCase()
+  );
+  if (!constituency || !selectedConstituencyObj) {
+    fieldErrors.constituency = 'Please select a Sub-County / Constituency.';
+  }
+
+  // Validate Ward
+  if (!ward) {
+    fieldErrors.ward = 'Please select a ward.';
+  } else if (selectedConstituencyObj && !selectedConstituencyObj.wards.some((w) => w.toLowerCase() === ward.toLowerCase())) {
+    fieldErrors.ward = 'Please select a valid ward for the selected constituency.';
+  }
+
+  // Validate Specific Location / Landmark
+  if (!specificLocation || specificLocation.length < 3) {
+    fieldErrors.location = 'Please provide a specific landmark or location (at least 3 characters).';
+  } else if (specificLocation.length > 200) {
     fieldErrors.location = 'Location description is too long (maximum 200 characters).';
   }
+
+  // Formatted composite location for display and search:
+  // e.g. "Kiharu, Township — Near Kenol stage, Murang'a town"
+  const location = selectedConstituencyObj
+    ? `${selectedConstituencyObj.name}, ${ward} — ${specificLocation}`
+    : specificLocation;
 
   // Validate Description
   if (!description || description.length < 10) {

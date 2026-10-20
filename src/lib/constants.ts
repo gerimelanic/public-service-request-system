@@ -181,6 +181,8 @@ export interface ServiceRequest {
   citizen_id: string;
   category: RequestCategory;
   location: string;
+  constituency?: string | null;
+  ward?: string | null;
   description: string;
   image_url: string | null;
   status: RequestStatus;
@@ -188,3 +190,50 @@ export interface ServiceRequest {
   updated_at: string;
   profiles?: Profile | null;
 }
+
+// 5. MURANG'A CONSTITUENCIES & WARDS
+export interface ConstituencyData {
+  name: string;
+  label: string;
+  wards: readonly string[];
+}
+
+export const MURANGA_CONSTITUENCIES: readonly ConstituencyData[] = [
+  {
+    name: 'Kangema',
+    label: 'Kangema Sub-County / Constituency',
+    wards: ['Kanyenya-Ini', 'Muguru', 'Rwathia'],
+  },
+  {
+    name: 'Mathioya',
+    label: 'Mathioya Sub-County / Constituency',
+    wards: ['Gitugi', 'Kiru', 'Kamacharia'],
+  },
+  {
+    name: 'Kiharu',
+    label: 'Kiharu Sub-County / Constituency',
+    wards: ['Wangu', 'Mugoiri', 'Mbiri', 'Township', 'Murarandia', 'Gaturi'],
+  },
+  {
+    name: 'Kigumo',
+    label: 'Kigumo Sub-County / Constituency',
+    wards: ['Kahumbu', 'Muthithi', 'Kigumo', 'Kangari', 'Kinyona'],
+  },
+  {
+    name: 'Maragwa',
+    label: 'Maragwa Sub-County / Constituency',
+    wards: ['Kimorori/Wempa', 'Makuyu', 'Kambiti', 'Kamahuha', 'Ichagaki', 'Nginda'],
+  },
+  {
+    name: 'Kandara',
+    label: 'Kandara Sub-County / Constituency',
+    wards: ["Ng'araria", 'Muruka', 'Kagundu-Ini', 'Gaichanjiru', 'Ithiru', 'Ruchu'],
+  },
+  {
+    name: 'Gatanga',
+    label: 'Gatanga Sub-County / Constituency',
+    wards: ['Ithanga', 'Kakuzi/Mitubiri', 'Mugumo-Ini', 'Kihumbu-Ini', 'Gatanga', 'Kariara'],
+  },
+] as const;
+
+export type MurangaConstituencyName = (typeof MURANGA_CONSTITUENCIES)[number]['name'];

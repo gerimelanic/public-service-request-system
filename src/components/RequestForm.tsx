@@ -8,6 +8,7 @@ import {
   CATEGORIES,
   MAX_IMAGE_BYTES,
   ALLOWED_IMAGE_TYPES,
+  MURANGA_CONSTITUENCIES,
 } from '@/lib/constants';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -34,7 +35,19 @@ export function RequestForm() {
   const [imageError, setImageError] = useState<string | null>(null);
   const [fileName, setFileName] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedConstituency, setSelectedConstituency] = useState<string>('');
+  const [selectedWard, setSelectedWard] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const activeConstituency = MURANGA_CONSTITUENCIES.find(
+    (c) => c.name === selectedConstituency
+  );
+  const availableWards = activeConstituency ? activeConstituency.wards : [];
+
+  const handleConstituencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedConstituency(e.target.value);
+    setSelectedWard(''); // Reset ward whenever constituency changes
+  };
 
   // Client-side image validation & preview (for enhanced UX; server remains authoritative)
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -150,30 +163,101 @@ export function RequestForm() {
             )}
           </div>
 
-          {/* 2. Location */}
-          <div className="space-y-2">
-            <Label htmlFor="location" className="font-bold text-zinc-950 flex items-center gap-1.5">
+          {/* 2. Specific Location & Administrative Division */}
+          <div className="space-y-4 rounded-xl border border-zinc-200 bg-zinc-50/60 p-4">
+            <div className="flex items-center gap-1.5 pb-1 border-b border-zinc-200">
               <MapPin className="h-4 w-4 text-[#1E6B34]" />
-              <span>Location / Landmark</span> <span className="text-rose-500">*</span>
-            </Label>
-            <Input
-              id="location"
-              name="location"
-              type="text"
-              placeholder="e.g. Near Kenol stage, Murang'a town"
-              required
-              minLength={3}
-              maxLength={200}
-              className="border-zinc-300 text-zinc-950 font-medium"
-            />
-            {state.fieldErrors?.location && (
-              <p className="text-xs font-semibold text-rose-600">
-                {state.fieldErrors.location}
+              <span className="text-sm font-bold text-zinc-950 uppercase tracking-wider">
+                Service Location & Administrative Area
+              </span>
+            </div>
+
+            {/* Constituency & Ward Cascading Dropdowns */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Constituency */}
+              <div className="space-y-2">
+                <Label htmlFor="constituency" className="font-bold text-zinc-950">
+                  Sub-County / Constituency <span className="text-rose-500">*</span>
+                </Label>
+                <select
+                  id="constituency"
+                  name="constituency"
+                  value={selectedConstituency}
+                  onChange={handleConstituencyChange}
+                  required
+                  className="flex h-11 w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium text-zinc-950 ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E6B34] focus-visible:ring-offset-1"
+                >
+                  <option value="" disabled>
+                    Select Sub-County / Constituency...
+                  </option>
+                  {MURANGA_CONSTITUENCIES.map((c) => (
+                    <option key={c.name} value={c.name}>
+                      {c.label}
+                    </option>
+                  ))}
+                </select>
+                {state.fieldErrors?.constituency && (
+                  <p className="text-xs font-semibold text-rose-600">
+                    {state.fieldErrors.constituency}
+                  </p>
+                )}
+              </div>
+
+              {/* Ward */}
+              <div className="space-y-2">
+                <Label htmlFor="ward" className="font-bold text-zinc-950">
+                  Ward <span className="text-rose-500">*</span>
+                </Label>
+                <select
+                  id="ward"
+                  name="ward"
+                  value={selectedWard}
+                  onChange={(e) => setSelectedWard(e.target.value)}
+                  required
+                  disabled={!selectedConstituency}
+                  className="flex h-11 w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium text-zinc-950 ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E6B34] focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:bg-zinc-100 disabled:text-zinc-400"
+                >
+                  <option value="" disabled>
+                    {selectedConstituency ? 'Select Ward...' : 'Select a constituency first'}
+                  </option>
+                  {availableWards.map((ward) => (
+                    <option key={ward} value={ward}>
+                      {ward}
+                    </option>
+                  ))}
+                </select>
+                {state.fieldErrors?.ward && (
+                  <p className="text-xs font-semibold text-rose-600">
+                    {state.fieldErrors.ward}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Specific Landmark / Street */}
+            <div className="space-y-2">
+              <Label htmlFor="specific_location" className="font-bold text-zinc-950">
+                Specific Landmark / Street / Village <span className="text-rose-500">*</span>
+              </Label>
+              <Input
+                id="specific_location"
+                name="specific_location"
+                type="text"
+                placeholder="e.g. Near Kenol stage, next to public dispensary, along C70 road"
+                required
+                minLength={3}
+                maxLength={200}
+                className="border-zinc-300 bg-white text-zinc-950 font-medium"
+              />
+              {state.fieldErrors?.location && (
+                <p className="text-xs font-semibold text-rose-600">
+                  {state.fieldErrors.location}
+                </p>
+              )}
+              <p className="text-xs text-zinc-600 font-medium">
+                Provide precise landmark names, road junctions, or building references to guide field crews.
               </p>
-            )}
-            <p className="text-xs text-zinc-600 font-medium">
-              Provide landmark names, road junctions, or building references to assist technicians.
-            </p>
+            </div>
           </div>
 
           {/* 3. Description */}
