@@ -169,17 +169,17 @@ export function AdminRequestList({ initialRequests }: AdminRequestListProps) {
         {/* Status Filter Tabs */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
-            <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mr-1 hidden lg:inline">
+            <span className="text-xs font-bold text-zinc-700 uppercase tracking-wider mr-1 hidden lg:inline">
               Filter by Status:
             </span>
 
             {/* All */}
             <button
               onClick={() => handleStatusFilterChange('all')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 activeStatus === 'all'
                   ? 'bg-[#1E6B34] text-white shadow-sm'
-                  : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200'
+                  : 'bg-zinc-100 text-zinc-800 hover:bg-zinc-200 border border-zinc-300'
               }`}
             >
               <span>All Received</span>
@@ -187,7 +187,7 @@ export function AdminRequestList({ initialRequests }: AdminRequestListProps) {
                 className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
                   activeStatus === 'all'
                     ? 'bg-[#D4A017] text-white'
-                    : 'bg-zinc-200 text-zinc-700'
+                    : 'bg-zinc-200 text-zinc-800'
                 }`}
               >
                 {counts.all}
@@ -197,15 +197,15 @@ export function AdminRequestList({ initialRequests }: AdminRequestListProps) {
             {/* Pending */}
             <button
               onClick={() => handleStatusFilterChange('pending')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 activeStatus === 'pending'
-                  ? 'bg-zinc-800 text-white shadow-sm'
-                  : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200'
+                  ? 'bg-zinc-900 text-white shadow-sm'
+                  : 'bg-zinc-100 text-zinc-800 hover:bg-zinc-200 border border-zinc-300'
               }`}
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
+              <span className="h-1.5 w-1.5 rounded-full bg-zinc-500" />
               <span>Pending</span>
-              <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-zinc-200 text-zinc-700">
+              <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-zinc-200 text-zinc-800">
                 {counts.pending}
               </span>
             </button>
@@ -213,15 +213,15 @@ export function AdminRequestList({ initialRequests }: AdminRequestListProps) {
             {/* In Progress */}
             <button
               onClick={() => handleStatusFilterChange('in_progress')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 activeStatus === 'in_progress'
                   ? 'bg-[#D4A017] text-white shadow-sm'
-                  : 'bg-amber-50 text-amber-900 hover:bg-amber-100 border border-amber-200/60'
+                  : 'bg-amber-50 text-amber-950 hover:bg-amber-100 border border-amber-300'
               }`}
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-600 animate-pulse" />
               <span>In Progress</span>
-              <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-amber-200 text-amber-900">
+              <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-amber-200 text-amber-950">
                 {counts.in_progress}
               </span>
             </button>
@@ -229,41 +229,41 @@ export function AdminRequestList({ initialRequests }: AdminRequestListProps) {
             {/* Resolved */}
             <button
               onClick={() => handleStatusFilterChange('resolved')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 activeStatus === 'resolved'
                   ? 'bg-[#1E6B34] text-white shadow-sm'
-                  : 'bg-emerald-50 text-emerald-900 hover:bg-emerald-100 border border-emerald-200/60'
+                  : 'bg-emerald-50 text-emerald-950 hover:bg-emerald-100 border border-emerald-300'
               }`}
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
               <span>Resolved</span>
-              <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-emerald-200 text-emerald-900">
+              <span className="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-emerald-200 text-emerald-950">
                 {counts.resolved}
               </span>
             </button>
           </div>
 
-          <div className="text-xs text-zinc-500 dark:text-zinc-400 self-end sm:self-center">
-            Showing <span className="font-semibold text-zinc-900 dark:text-zinc-100">{filteredRequests.length}</span> of {initialRequests.length}
+          <div className="text-xs font-medium text-zinc-700 self-end sm:self-center">
+            Showing <span className="font-bold text-zinc-950">{filteredRequests.length}</span> of {initialRequests.length}
           </div>
         </div>
 
         {/* Search & Category Filter Sub-row */}
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 pt-3 border-t border-zinc-100 dark:border-zinc-800">
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 pt-3 border-t border-zinc-200">
           {/* Search Box */}
           <div className="relative sm:col-span-7 md:col-span-8">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-zinc-400" />
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-zinc-500" />
             <input
               type="text"
               placeholder="Search by citizen, phone, ID number, location or keywords..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-9 py-2 text-xs rounded-lg border border-zinc-200 bg-zinc-50/50 focus:bg-white dark:border-zinc-700 dark:bg-zinc-800/50 dark:focus:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-zinc-900 dark:text-zinc-100"
+              className="w-full pl-9 pr-9 py-2 text-xs font-medium rounded-lg border border-zinc-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#1E6B34] text-zinc-950 placeholder:text-zinc-500"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-2.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+                className="absolute right-2.5 top-2.5 text-zinc-500 hover:text-zinc-700"
                 title="Clear search"
               >
                 <X className="h-3.5 w-3.5" />
@@ -273,11 +273,11 @@ export function AdminRequestList({ initialRequests }: AdminRequestListProps) {
 
           {/* Category Dropdown */}
           <div className="sm:col-span-5 md:col-span-4 flex items-center gap-1.5">
-            <Filter className="h-4 w-4 text-zinc-400 shrink-0 hidden sm:inline" />
+            <Filter className="h-4 w-4 text-zinc-500 shrink-0 hidden sm:inline" />
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full py-2 px-3 text-xs rounded-lg border border-zinc-200 bg-zinc-50/50 focus:bg-white dark:border-zinc-700 dark:bg-zinc-800/50 dark:focus:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-zinc-900 dark:text-zinc-100"
+              className="w-full py-2 px-3 text-xs font-medium rounded-lg border border-zinc-300 bg-white focus:outline-none focus:ring-2 focus:ring-[#1E6B34] text-zinc-950"
             >
               <option value="all">All Service Categories</option>
               {CATEGORIES.map((cat) => (
@@ -392,7 +392,7 @@ export function AdminRequestList({ initialRequests }: AdminRequestListProps) {
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <div className="flex flex-wrap items-center gap-2">
                           {/* Category Badge */}
-                          <span className="inline-flex items-center gap-1.5 rounded-md bg-zinc-100 dark:bg-zinc-800 px-2.5 py-1 text-xs font-semibold text-zinc-800 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-700">
+                          <span className="inline-flex items-center gap-1.5 rounded-md bg-zinc-100 px-2.5 py-1 text-xs font-bold text-zinc-900 border border-zinc-300">
                             <span>{categoryMeta.emoji}</span>
                             <span>{displayCategoryLabel}</span>
                           </span>
@@ -402,16 +402,16 @@ export function AdminRequestList({ initialRequests }: AdminRequestListProps) {
                         </div>
 
                         {/* Request ID & Timestamp */}
-                        <div className="flex items-center gap-2 text-[11px] text-zinc-500 dark:text-zinc-400 font-mono">
+                        <div className="flex items-center gap-2 text-[11px] text-zinc-700 font-mono font-medium">
                           <span>ID: {req.id.slice(0, 8)}</span>
                         </div>
                       </div>
 
                       {/* Citizen Information Row */}
-                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-zinc-700 dark:text-zinc-200 bg-emerald-50/40 dark:bg-emerald-950/40 p-2.5 rounded-lg border border-[#1E6B34]/20 dark:border-[#1E6B34]/40">
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-zinc-800 bg-emerald-50/70 p-2.5 rounded-lg border border-[#1E6B34]/30">
                         {/* Full Name */}
-                        <div className="flex items-center gap-1.5 font-semibold text-zinc-900 dark:text-zinc-100">
-                          <User className="h-3.5 w-3.5 text-[#1E6B34] dark:text-emerald-400 shrink-0" />
+                        <div className="flex items-center gap-1.5 font-bold text-zinc-950">
+                          <User className="h-3.5 w-3.5 text-[#1E6B34] shrink-0" />
                           <span>{req.profiles?.full_name || 'Citizen'}</span>
                         </div>
 
@@ -421,7 +421,7 @@ export function AdminRequestList({ initialRequests }: AdminRequestListProps) {
                             <Phone className="h-3.5 w-3.5 text-[#D4A017] shrink-0" />
                             <a
                               href={`tel:${req.profiles.phone}`}
-                              className="hover:underline text-[#1E6B34] dark:text-emerald-400 font-medium"
+                              className="hover:underline text-[#1E6B34] font-bold"
                             >
                               {req.profiles.phone}
                             </a>
@@ -430,27 +430,27 @@ export function AdminRequestList({ initialRequests }: AdminRequestListProps) {
 
                         {/* National ID Number */}
                         {req.profiles?.id_number && (
-                          <div className="flex items-center gap-1.5 text-zinc-700 dark:text-zinc-300">
+                          <div className="flex items-center gap-1.5 text-zinc-800 font-medium">
                             <CreditCard className="h-3.5 w-3.5 text-[#D4A017] shrink-0" />
                             <span>ID: {req.profiles.id_number}</span>
                           </div>
                         )}
 
                         {/* Date submitted */}
-                        <div className="flex items-center gap-1.5 ml-auto text-zinc-500 dark:text-zinc-400">
-                          <Calendar className="h-3 w-3 shrink-0" />
+                        <div className="flex items-center gap-1.5 ml-auto text-zinc-700 font-medium">
+                          <Calendar className="h-3 w-3 shrink-0 text-zinc-500" />
                           <span>{formattedDate}</span>
                         </div>
                       </div>
 
                       {/* Location Landmark */}
-                      <div className="flex items-center gap-1.5 text-xs font-semibold text-[#1E6B34] dark:text-emerald-400">
-                        <MapPin className="h-3.5 w-3.5 shrink-0 text-[#1E6B34] dark:text-emerald-400" />
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E6B34]">
+                        <MapPin className="h-3.5 w-3.5 shrink-0 text-[#1E6B34]" />
                         <span>{req.location}</span>
                       </div>
 
                       {/* Description */}
-                      <p className="text-sm text-zinc-800 dark:text-zinc-100 whitespace-pre-wrap leading-relaxed font-normal">
+                      <p className="text-sm text-zinc-900 whitespace-pre-wrap leading-relaxed font-medium">
                         {displayDescription}
                       </p>
                     </div>

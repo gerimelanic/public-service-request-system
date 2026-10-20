@@ -24,22 +24,22 @@ export function CategoryBreakdown({ byCategory, totalRequests = 0 }: CategoryBre
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div className="flex items-center gap-2">
             <div
-              className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#1E6B34]/10 text-[#1E6B34] dark:bg-[#1E6B34]/20 dark:text-emerald-400"
+              className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#1E6B34]/10 text-[#1E6B34]"
               aria-hidden="true"
             >
               <Layers className="h-4 w-4" />
             </div>
             <div>
-              <CardTitle className="text-lg sm:text-xl font-bold">Category Breakdown</CardTitle>
-              <CardDescription className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
+              <CardTitle className="text-lg sm:text-xl font-bold text-zinc-950">Category Breakdown</CardTitle>
+              <CardDescription className="text-xs sm:text-sm text-zinc-700 font-medium">
                 Resolution progress and request distribution across public service areas
               </CardDescription>
             </div>
           </div>
 
           {/* Quick summary pill */}
-          <div className="text-xs font-medium text-zinc-600 dark:text-zinc-400 self-start sm:self-auto">
-            <span className="font-semibold text-zinc-900 dark:text-zinc-100">{totalRequests}</span>{' '}
+          <div className="text-xs font-semibold text-zinc-700 self-start sm:self-auto">
+            <span className="font-bold text-zinc-950">{totalRequests}</span>{' '}
             total logged across {byCategory.length} categories
           </div>
         </div>
@@ -50,12 +50,12 @@ export function CategoryBreakdown({ byCategory, totalRequests = 0 }: CategoryBre
         {hasZeroRequests && (
           <div
             role="status"
-            className="rounded-lg bg-emerald-50/70 dark:bg-emerald-950/30 p-3 sm:p-4 text-xs sm:text-sm text-emerald-900 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800 flex items-start gap-2.5"
+            className="rounded-lg bg-emerald-50 p-3 sm:p-4 text-xs sm:text-sm text-emerald-900 border border-emerald-200 flex items-start gap-2.5"
           >
-            <Info className="h-4 w-4 shrink-0 text-[#1E6B34] dark:text-emerald-400 mt-0.5" />
+            <Info className="h-4 w-4 shrink-0 text-[#1E6B34] mt-0.5" />
             <div>
-              <p className="font-semibold">No service requests submitted yet</p>
-              <p className="text-xs text-emerald-800/80 dark:text-emerald-300/80 mt-0.5">
+              <p className="font-bold">No service requests submitted yet</p>
+              <p className="text-xs text-emerald-800 font-medium mt-0.5">
                 All service categories are initialized at zero. As citizens submit requests,
                 resolution bars and counts will automatically update in real-time.
               </p>
@@ -79,28 +79,28 @@ export function CategoryBreakdown({ byCategory, totalRequests = 0 }: CategoryBre
               <div key={item.category} className="space-y-1.5">
                 {/* Header line: Category label, emoji, and explicit text counts */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs sm:text-sm">
-                  <div className="flex items-center gap-1.5 font-medium text-zinc-800 dark:text-zinc-200">
+                  <div className="flex items-center gap-1.5 font-bold text-zinc-950">
                     <span aria-hidden="true">{emoji}</span>
-                    <span className="font-semibold">{label}</span>
+                    <span>{label}</span>
                   </div>
 
                   {/* Explicit text counts: never rely on bar color alone for meaning */}
-                  <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-zinc-500 dark:text-zinc-400">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-zinc-700 font-medium">
                     <span>
-                      <strong className="text-zinc-800 dark:text-zinc-200">{item.total}</strong> total
+                      <strong className="text-zinc-950 font-bold">{item.total}</strong> total
                     </span>
-                    <span className="text-zinc-300 dark:text-zinc-700" aria-hidden="true">•</span>
-                    <span className="text-amber-700 dark:text-amber-400 font-medium">
+                    <span className="text-zinc-400" aria-hidden="true">•</span>
+                    <span className="text-amber-800 font-bold">
                       <strong>{item.open}</strong> open
                     </span>
-                    <span className="text-zinc-300 dark:text-zinc-700" aria-hidden="true">•</span>
-                    <span className="text-[#1E6B34] dark:text-emerald-400 font-medium">
+                    <span className="text-zinc-400" aria-hidden="true">•</span>
+                    <span className="text-[#1E6B34] font-bold">
                       <strong>{item.resolved}</strong> resolved
                     </span>
                     {item.total > 0 && (
                       <>
-                        <span className="text-zinc-300 dark:text-zinc-700" aria-hidden="true">•</span>
-                        <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                        <span className="text-zinc-400" aria-hidden="true">•</span>
+                        <span className="font-semibold text-zinc-900">
                           {roundedResolvedPct}% resolved
                         </span>
                       </>

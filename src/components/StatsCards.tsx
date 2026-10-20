@@ -59,12 +59,12 @@ export function StatsCards({ stats }: StatsCardsProps) {
           >
             <CardContent className="p-4 sm:p-5">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-xs sm:text-sm font-medium text-zinc-600 dark:text-zinc-400 line-clamp-1">
+                <span className="text-xs sm:text-sm font-bold text-zinc-800 line-clamp-1">
                   {card.title}
                 </span>
                 {/* Municipal primary color badge icon */}
                 <div
-                  className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-lg bg-[#1E6B34]/10 text-[#1E6B34] dark:bg-[#1E6B34]/20 dark:text-emerald-400"
+                  className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-lg bg-[#1E6B34]/10 text-[#1E6B34]"
                   aria-hidden="true"
                 >
                   <IconComponent className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -72,11 +72,11 @@ export function StatsCards({ stats }: StatsCardsProps) {
               </div>
 
               <div className="mt-2 sm:mt-3">
-                <div className="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+                <div className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-950">
                   {card.value}
                   {card.suffix}
                 </div>
-                <p className="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400 mt-1 line-clamp-1">
+                <p className="text-[11px] sm:text-xs text-zinc-600 font-medium mt-1 line-clamp-1">
                   {card.subtitle}
                 </p>
               </div>

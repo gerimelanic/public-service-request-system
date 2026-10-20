@@ -140,23 +140,20 @@ export const STATUS_CONFIG: Record<
   pending: {
     label: 'Pending',
     actionLabel: 'Mark In Progress',
-    badgeClasses:
-      'bg-zinc-100 text-zinc-700 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700',
-    dotClass: 'bg-zinc-400',
+    badgeClasses: 'bg-zinc-100 text-zinc-900 border-zinc-300 font-bold',
+    dotClass: 'bg-zinc-600',
   },
   in_progress: {
     label: 'In Progress',
     actionLabel: 'Mark Resolved',
-    badgeClasses:
-      'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800',
-    dotClass: 'bg-amber-500 animate-pulse',
+    badgeClasses: 'bg-amber-50 text-amber-950 border-amber-300 font-bold',
+    dotClass: 'bg-amber-600 animate-pulse',
   },
   resolved: {
     label: 'Resolved',
     actionLabel: null,
-    badgeClasses:
-      'bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800',
-    dotClass: 'bg-emerald-500',
+    badgeClasses: 'bg-emerald-50 text-emerald-950 border-emerald-300 font-bold',
+    dotClass: 'bg-emerald-700',
   },
 };
 

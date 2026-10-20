@@ -52,12 +52,12 @@ export default async function RequestsPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+          <h1 className="text-3xl font-extrabold tracking-tight text-zinc-950">
             My Service Requests
           </h1>
-          <p className="text-zinc-600 dark:text-zinc-400 mt-1">
+          <p className="text-zinc-700 mt-1 font-medium">
             Welcome back{' '}
-            <span className="font-semibold text-zinc-900 dark:text-zinc-100">
+            <span className="font-bold text-zinc-950">
               {profile?.full_name || user?.email}
             </span>
             . Track real-time progress and departmental resolutions.
@@ -74,20 +74,20 @@ export default async function RequestsPage() {
 
       {/* Query error alert */}
       {error && (
-        <div className="mb-6 rounded-lg bg-rose-50 p-4 text-sm text-rose-700 border border-rose-200 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-900">
+        <div className="mb-6 rounded-lg bg-rose-50 p-4 text-sm font-medium text-rose-800 border border-rose-200">
           Failed to load service requests. Please refresh the page.
         </div>
       )}
 
       {/* Empty State */}
       {requestList.length === 0 ? (
-        <Card className="border-dashed border-2 border-zinc-200 dark:border-zinc-800 text-center py-12">
+        <Card className="border-dashed border-2 border-zinc-300 text-center py-12">
           <CardHeader className="max-w-md mx-auto">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400 mb-3">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-700 mb-3">
               <Sparkles className="h-7 w-7" />
             </div>
-            <CardTitle className="text-xl font-bold">No requests lodged yet</CardTitle>
-            <CardDescription className="text-sm mt-1">
+            <CardTitle className="text-xl font-bold text-zinc-950">No requests lodged yet</CardTitle>
+            <CardDescription className="text-sm mt-1 text-zinc-700">
               Have you noticed a broken streetlight, water pipe leak, uncollected refuse, or road damage in your area? Report it directly to municipal officers.
             </CardDescription>
           </CardHeader>
@@ -103,7 +103,7 @@ export default async function RequestsPage() {
       ) : (
         /* Requests Grid / List */
         <div className="space-y-4">
-          <div className="flex items-center justify-between text-xs text-zinc-500 px-1">
+          <div className="flex items-center justify-between text-xs text-zinc-700 font-semibold px-1">
             <span>
               Showing {requestList.length} {requestList.length === 1 ? 'request' : 'requests'}
             </span>
@@ -140,14 +140,14 @@ export default async function RequestsPage() {
               return (
                 <Card
                   key={req.id}
-                  className="hover:border-[#1E6B34]/50 border-[#1E6B34]/25 transition-all shadow-sm"
+                  className="hover:border-[#1E6B34]/60 border-[#1E6B34]/30 bg-white transition-all shadow-sm"
                 >
                   <CardContent className="p-5">
                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                       {/* Left: Category, Location, Description */}
                       <div className="flex-1 space-y-3">
                         <div className="flex flex-wrap items-center gap-2.5">
-                          <span className="inline-flex items-center gap-1.5 rounded-md bg-zinc-100 dark:bg-zinc-800 px-2.5 py-1 text-xs font-semibold text-zinc-800 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-700">
+                          <span className="inline-flex items-center gap-1.5 rounded-md bg-zinc-100 px-2.5 py-1 text-xs font-bold text-zinc-900 border border-zinc-300">
                             <span>{categoryMeta.emoji}</span>
                             <span>{displayCategoryLabel}</span>
                           </span>
@@ -155,21 +155,21 @@ export default async function RequestsPage() {
                           <StatusBadge status={req.status} />
                         </div>
 
-                        <div className="flex items-center gap-1.5 text-xs font-semibold text-[#1E6B34] dark:text-emerald-400">
-                          <MapPin className="h-3.5 w-3.5 shrink-0 text-[#1E6B34] dark:text-emerald-400" />
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-[#1E6B34]">
+                          <MapPin className="h-3.5 w-3.5 shrink-0 text-[#1E6B34]" />
                           <span>{req.location}</span>
                         </div>
 
-                        <p className="text-sm text-zinc-800 dark:text-zinc-100 whitespace-pre-wrap leading-relaxed font-normal">
+                        <p className="text-sm text-zinc-900 whitespace-pre-wrap leading-relaxed font-medium">
                           {displayDescription}
                         </p>
 
-                        <div className="flex items-center gap-4 text-[11px] text-zinc-500 dark:text-zinc-300 pt-1 border-t border-zinc-100 dark:border-zinc-800/80">
-                          <span className="flex items-center gap-1">
-                            <Calendar className="h-3 w-3" />
+                        <div className="flex items-center gap-4 text-xs text-zinc-600 font-medium pt-2 border-t border-zinc-200">
+                          <span className="flex items-center gap-1.5">
+                            <Calendar className="h-3.5 w-3.5 text-zinc-500" />
                             <span>Submitted: {formattedDate}</span>
                           </span>
-                          <span className="flex items-center gap-1 font-mono text-[10px] text-zinc-400 dark:text-zinc-300">
+                          <span className="flex items-center gap-1 font-mono text-[11px] text-zinc-600">
                             ID: {req.id.slice(0, 8)}
                           </span>
                         </div>

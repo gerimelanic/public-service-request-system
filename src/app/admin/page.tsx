@@ -90,21 +90,21 @@ export default async function AdminPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+            <h1 className="text-3xl font-extrabold tracking-tight text-zinc-950">
               Services Received
             </h1>
-            <span className="inline-flex items-center gap-1 rounded-md bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+            <span className="inline-flex items-center gap-1 rounded-md bg-emerald-100 px-2 py-0.5 text-xs font-bold text-emerald-800">
               <Shield className="h-3 w-3" />
               Verified Officer
             </span>
           </div>
-          <p className="text-zinc-600 mt-1">
+          <p className="text-zinc-700 mt-1 font-medium">
             Logged in as Admin. Track the progress of submitted requests, monitor department analytics, and advance resolutions.
           </p>
         </div>
 
-        <div className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800/80 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-700">
-          <Sparkles className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+        <div className="flex items-center gap-2 text-xs font-semibold text-zinc-700 bg-zinc-100 px-3 py-1.5 rounded-lg border border-zinc-300">
+          <Sparkles className="h-3.5 w-3.5 text-emerald-700" />
           <span>RLS Active: Admin Access</span>
         </div>
       </div>

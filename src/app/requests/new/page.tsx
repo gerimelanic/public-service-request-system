@@ -9,7 +9,7 @@ export default function NewRequestPage() {
       <div className="mb-6">
         <Link
           href="/requests"
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 transition-colors"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-zinc-800 hover:text-zinc-950 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
           <span>Back to My Requests</span>

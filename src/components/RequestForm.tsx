@@ -103,7 +103,7 @@ export function RequestForm() {
 
           {/* 1. Category */}
           <div className="space-y-2">
-            <Label htmlFor="category" className="font-semibold text-zinc-900 dark:text-zinc-100">
+            <Label htmlFor="category" className="font-bold text-zinc-950">
               Service Category <span className="text-rose-500">*</span>
             </Label>
             <div className="relative">
@@ -113,7 +113,7 @@ export function RequestForm() {
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 required
-                className="flex h-11 w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E6B34] focus-visible:ring-offset-1 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+                className="flex h-11 w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm font-medium text-zinc-950 ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E6B34] focus-visible:ring-offset-1"
               >
                 <option value="" disabled>
                   Select a category...
@@ -129,7 +129,7 @@ export function RequestForm() {
             {/* Custom Category Input if "Other" is selected */}
             {selectedCategory === 'other' && (
               <div className="space-y-1.5 pt-2 animate-in fade-in slide-in-from-top-1">
-                <Label htmlFor="custom_category" className="text-xs font-semibold text-[#1E6B34] flex items-center gap-1.5">
+                <Label htmlFor="custom_category" className="text-xs font-bold text-[#1E6B34] flex items-center gap-1.5">
                   <span>Specify service not captured above</span> <span className="text-rose-500">*</span>
                 </Label>
                 <Input
@@ -138,13 +138,13 @@ export function RequestForm() {
                   type="text"
                   required
                   placeholder="e.g. Park bench repair, Drainage blockage, Noise complaint"
-                  className="border-zinc-300 focus-visible:ring-[#1E6B34]"
+                  className="border-zinc-300 text-zinc-950 font-medium focus-visible:ring-[#1E6B34]"
                 />
               </div>
             )}
 
             {state.fieldErrors?.category && (
-              <p className="text-xs text-rose-600 dark:text-rose-400">
+              <p className="text-xs font-semibold text-rose-600">
                 {state.fieldErrors.category}
               </p>
             )}
@@ -152,8 +152,8 @@ export function RequestForm() {
 
           {/* 2. Location */}
           <div className="space-y-2">
-            <Label htmlFor="location" className="font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
-              <MapPin className="h-4 w-4 text-emerald-600" />
+            <Label htmlFor="location" className="font-bold text-zinc-950 flex items-center gap-1.5">
+              <MapPin className="h-4 w-4 text-[#1E6B34]" />
               <span>Location / Landmark</span> <span className="text-rose-500">*</span>
             </Label>
             <Input
@@ -164,21 +164,22 @@ export function RequestForm() {
               required
               minLength={3}
               maxLength={200}
+              className="border-zinc-300 text-zinc-950 font-medium"
             />
             {state.fieldErrors?.location && (
-              <p className="text-xs text-rose-600 dark:text-rose-400">
+              <p className="text-xs font-semibold text-rose-600">
                 {state.fieldErrors.location}
               </p>
             )}
-            <p className="text-[11px] text-zinc-500">
+            <p className="text-xs text-zinc-600 font-medium">
               Provide landmark names, road junctions, or building references to assist technicians.
             </p>
           </div>
 
           {/* 3. Description */}
           <div className="space-y-2">
-            <Label htmlFor="description" className="font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
-              <FileText className="h-4 w-4 text-emerald-600" />
+            <Label htmlFor="description" className="font-bold text-zinc-950 flex items-center gap-1.5">
+              <FileText className="h-4 w-4 text-[#1E6B34]" />
               <span>Detailed Description</span> <span className="text-rose-500">*</span>
             </Label>
             <textarea
@@ -189,10 +190,10 @@ export function RequestForm() {
               required
               minLength={10}
               maxLength={2000}
-              className="flex w-full rounded-md border border-zinc-300 bg-white p-3 text-sm ring-offset-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-1 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100"
+              className="flex w-full rounded-md border border-zinc-300 bg-white p-3 text-sm text-zinc-950 font-medium ring-offset-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1E6B34] focus-visible:ring-offset-1"
             />
             {state.fieldErrors?.description && (
-              <p className="text-xs text-rose-600 dark:text-rose-400">
+              <p className="text-xs font-semibold text-rose-600">
                 {state.fieldErrors.description}
               </p>
             )}
@@ -200,9 +201,9 @@ export function RequestForm() {
 
           {/* 4. Optional Photo Upload */}
           <div className="space-y-2">
-            <Label htmlFor="image" className="font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
+            <Label htmlFor="image" className="font-bold text-zinc-950 flex items-center gap-1.5">
               <ImageIcon className="h-4 w-4 text-[#1E6B34]" />
-              <span>Attach Photo</span> <span className="text-xs text-zinc-400 font-normal">(Optional, max 2 MB)</span>
+              <span>Attach Photo</span> <span className="text-xs text-zinc-600 font-medium">(Optional, max 2 MB)</span>
             </Label>
 
             <div className="rounded-lg border-2 border-dashed border-[#1E6B34]/30 bg-zinc-50/50 p-4 transition-colors hover:border-[#1E6B34]/60">
@@ -228,7 +229,7 @@ export function RequestForm() {
                   >
                     Click to browse photo
                   </label>
-                  <p className="text-xs text-zinc-500 mt-1">JPEG, PNG, or WebP up to 2 MB</p>
+                  <p className="text-xs text-zinc-600 font-medium mt-1">JPEG, PNG, or WebP up to 2 MB</p>
                 </div>
               ) : (
                 <div className="flex items-center gap-4">
