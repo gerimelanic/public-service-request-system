@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
-import { Phone, Mail, MapPin, Shield } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock } from 'lucide-react';
+import { COUNTY_CONTACT } from '@/lib/constants';
 
 export async function Footer() {
   const supabase = await createClient();
@@ -76,7 +77,7 @@ export async function Footer() {
                 </ul>
               </div>
 
-              {/* Col 3: County Contact Info */}
+              {/* Col 3: Verified County Contact Info */}
               <div className="space-y-2">
                 <h4 className="text-xs font-bold text-white uppercase tracking-wider">
                   County Contacts
@@ -84,19 +85,33 @@ export async function Footer() {
                 <ul className="space-y-2 text-xs text-zinc-400">
                   <li className="flex items-center gap-2">
                     <MapPin className="h-3.5 w-3.5 text-[#D4A017] shrink-0" />
-                    <span>County Headquarters, Murang&apos;a Town</span>
+                    <span>{COUNTY_CONTACT.location}</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Mail className="h-3.5 w-3.5 text-[#D4A017] shrink-0" />
+                    <span>{COUNTY_CONTACT.postal}</span>
                   </li>
                   <li className="flex items-center gap-2">
                     <Phone className="h-3.5 w-3.5 text-[#D4A017] shrink-0" />
-                    <a href="tel:+254700000000" className="hover:text-white transition-colors">
-                      Toll Free: 0800 720 000
+                    <a
+                      href={`tel:${COUNTY_CONTACT.phone.replace(/[\s-]/g, '')}`}
+                      className="hover:text-white transition-colors"
+                    >
+                      {COUNTY_CONTACT.phone}
                     </a>
                   </li>
                   <li className="flex items-center gap-2">
                     <Mail className="h-3.5 w-3.5 text-[#D4A017] shrink-0" />
-                    <a href="mailto:services@muranga.go.ke" className="hover:text-white transition-colors">
-                      services@muranga.go.ke
+                    <a
+                      href={`mailto:${COUNTY_CONTACT.email}`}
+                      className="hover:text-white transition-colors"
+                    >
+                      {COUNTY_CONTACT.email}
                     </a>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Clock className="h-3.5 w-3.5 text-[#D4A017] shrink-0" />
+                    <span>{COUNTY_CONTACT.hours}</span>
                   </li>
                 </ul>
               </div>
@@ -104,13 +119,12 @@ export async function Footer() {
           )}
         </div>
 
-        {/* Bottom copyright & RLS indicator */}
+        {/* Bottom copyright & Demo disclaimer note */}
         <div className="border-t border-zinc-800/80 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-zinc-500">
           <p>© {new Date().getFullYear()} Murang&apos;a County Government. All rights reserved.</p>
-          <div className="flex items-center gap-2 text-zinc-400">
-            <Shield className="h-3.5 w-3.5 text-[#1E6B34]" />
-            <span>Secured via PostgreSQL Row Level Security (RLS)</span>
-          </div>
+          <p className="text-zinc-400 text-center sm:text-right italic">
+            Demo project for assessment purposes, not an official county service.
+          </p>
         </div>
       </div>
     </footer>

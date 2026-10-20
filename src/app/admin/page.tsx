@@ -105,7 +105,7 @@ export default async function AdminPage() {
 
         <div className="flex items-center gap-2 text-xs font-semibold text-zinc-700 bg-zinc-100 px-3 py-1.5 rounded-lg border border-zinc-300">
           <Sparkles className="h-3.5 w-3.5 text-emerald-700" />
-          <span>RLS Active: Admin Access</span>
+          <span>Administrative Access</span>
         </div>
       </div>
 

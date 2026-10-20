@@ -237,3 +237,12 @@ export const MURANGA_CONSTITUENCIES: readonly ConstituencyData[] = [
 ] as const;
 
 export type MurangaConstituencyName = (typeof MURANGA_CONSTITUENCIES)[number]['name'];
+
+// 6. COUNTY CONTACT INFORMATION
+export const COUNTY_CONTACT = {
+  location: "County Headquarters, Murang'a Town",
+  postal: "P.O. Box 52-10200, Murang'a",
+  phone: "+254 757 562 988",
+  email: "info@muranga.go.ke",
+  hours: "Mon to Fri, 8:00 AM to 5:00 PM",
+} as const;

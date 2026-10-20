@@ -9,7 +9,7 @@ Built with **Next.js 16 (App Router)**, **TypeScript**, **Tailwind CSS v4**, **s
 ## 🌟 Key Features
 
 ### For Citizens (Applicant Portal)
-- **Account Registration & Verification:** Secure multi-step signup with Kenyan National ID and phone verification, protected by Supabase Auth with custom-branded confirmation emails.
+- **Account Registration & Verification:** Secure multi-step signup with Kenyan National ID and phone number, protected by Supabase Auth with custom-branded confirmation emails.
 - **Service Request Reporting:** Submit municipal issues across 7 official categories:
   - 💡 Broken streetlights & dark walkways
   - 💧 Water supply & pipe leakages
@@ -83,6 +83,23 @@ Row Level Security (RLS) is active across all tables in PostgreSQL:
 - **Citizens:** Restricted by Postgres policies to only SELECT their own submitted rows (`auth.uid() = citizen_id`).
 - **Officers/Admins:** Elevated policies allow verified admins to read and advance all county-wide requests.
 - **Public:** Landing page and public portal brand assets are globally viewable.
+
+---
+
+## 📞 County Contact Information
+
+Verified Murang'a County contact details:
+- **Location:** County Headquarters, Murang'a Town
+- **Postal Address:** P.O. Box 52-10200, Murang'a
+- **Telephone:** [+254 757 562 988](tel:+254757562988)
+- **Official Email:** [info@muranga.go.ke](mailto:info@muranga.go.ke)
+- **Office Hours:** Monday to Friday, 8:00 AM – 5:00 PM
+
+---
+
+## ⚠️ Disclaimer
+
+> **Demo project for assessment purposes, not an official county service.**
 
 ---
 
